@@ -400,16 +400,22 @@
   }
 
   function render() {
+    const wasFlipped = cardEl.classList.contains('flipped');
     cardEl.classList.remove('flipped');
     const c = cards[order[pos]];
-    setTimeout(() => {
+    const swap = () => {
       termEl.textContent = c.q;
       coreEl.textContent = c.core;
       bdEl.innerHTML = c.bd;
       const label = c.cat === 'ports' ? 'PORT' : 'TERM';
       tagFront.textContent = label;
       tagBack.textContent = label;
-    }, cardEl.classList.contains('flipped') ? 250 : 0);
+    };
+    // If the card was showing its answer, wait for the full flip-back
+    // (matches the 0.55s CSS transition) before swapping text, so the
+    // next card's answer never flashes mid-flip.
+    if (wasFlipped) setTimeout(swap, 560);
+    else swap();
     curEl.textContent = pos + 1;
     totalEl.textContent = order.length;
   }
