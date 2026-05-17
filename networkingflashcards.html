@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Security+ Networking Flashcards</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d0f14'/%3E%3Cg stroke='%23ff6b3d' stroke-width='3' fill='%23ff6b3d'%3E%3Cline x1='32' y1='32' x2='32' y2='14'/%3E%3Cline x1='32' y1='32' x2='16' y2='44'/%3E%3Cline x1='32' y1='32' x2='48' y2='44'/%3E%3Ccircle cx='32' cy='12' r='6'/%3E%3Ccircle cx='14' cy='46' r='6'/%3E%3Ccircle cx='50' cy='46' r='6'/%3E%3Ccircle cx='32' cy='32' r='5' fill='%23ffb38a' stroke='%23ffb38a'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&display=swap');
+
+  :root {
+    --bg: #0d0f14;
+    --panel: #161922;
+    --ink: #f4f1ea;
+    --muted: #8a8f9c;
+    --accent: #ff6b3d;
+    --accent-soft: #ffb38a;
+    --line: #2a2e3a;
+    --good: #5fd97f;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    background-image: radial-gradient(circle at 20% 10%, rgba(255,107,61,0.08), transparent 40%),
+                      radial-gradient(circle at 85% 90%, rgba(95,217,127,0.06), transparent 45%);
+    color: var(--ink);
+    font-family: 'Space Mono', monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 16px 60px;
+  }
+
+  header { text-align: center; margin-bottom: 8px; }
+
+  h1 {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  h1 .accent { color: var(--accent); }
+
+  .sub {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-top: 10px;
+    letter-spacing: 0.05em;
+  }
+
+  .controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 24px 0 18px;
+  }
+
+  .chip {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    padding: 8px 14px;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .chip:hover { color: var(--ink); border-color: var(--accent); }
+  .chip.active {
+    background: var(--accent);
+    color: #0d0f14;
+    border-color: var(--accent);
+    font-weight: 700;
+  }
+
+  .card-wrap {
+    perspective: 1600px;
+    width: min(620px, 94vw);
+    min-height: 440px;
+    margin-top: 10px;
+  }
+
+  .card {
+    width: 100%;
+    min-height: 440px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.55s cubic-bezier(0.4, 0.0, 0.2, 1);
+    cursor: pointer;
+  }
+
+  .card.flipped { transform: rotateY(180deg); }
+
+  .face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 38px;
+    text-align: center;
+    overflow-y: auto;
+  }
+
+  .face::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+  }
+
+  .face.back {
+    transform: rotateY(180deg);
+    background: #12151d;
+    text-align: left;
+    justify-content: flex-start;
+  }
+
+  .tag {
+    position: absolute;
+    top: 16px;
+    right: 18px;
+    font-size: 0.62rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  .front .term {
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    font-size: clamp(1.6rem, 6vw, 2.6rem);
+    line-height: 1.1;
+  }
+
+  .front .hint {
+    margin-top: 18px;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  .back .label {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+    margin: 14px 0 6px;
+    font-weight: 700;
+  }
+
+  .back .label:first-of-type { margin-top: 6px; }
+
+  .back .core {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .back .breakdown {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+
+  .back .breakdown strong { color: var(--accent-soft); }
+
+  .back .sec {
+    display: block;
+    margin-top: 12px;
+    font-size: 0.82rem;
+    color: var(--good);
+    line-height: 1.6;
+  }
+
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 26px;
+  }
+
+  .nav button {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-family: 'Space Mono', monospace;
+    font-size: 0.8rem;
+    padding: 12px 22px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.16s ease;
+    letter-spacing: 0.05em;
+  }
+
+  .nav button:hover { border-color: var(--accent); color: var(--accent); }
+  .nav button:active { transform: translateY(1px); }
+
+  .counter {
+    font-size: 0.82rem;
+    color: var(--muted);
+    min-width: 70px;
+    text-align: center;
+  }
+
+  .counter b { color: var(--ink); }
+
+  .footer-tip {
+    margin-top: 30px;
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-align: center;
+    max-width: 520px;
+    line-height: 1.6;
+  }
+
+  kbd {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-size: 0.7rem;
+    color: var(--accent-soft);
+  }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Networking <span class="accent">Flashcards</span></h1>
+    <div class="sub">SECURITY+ SY0-701 // CORE LINE + PLAIN BREAKDOWN</div>
+  </header>
+
+  <div class="controls" id="filters"></div>
+
+  <div class="card-wrap">
+    <div class="card" id="card">
+      <div class="face front">
+        <span class="tag" id="tagFront"></span>
+        <div class="term" id="term"></div>
+        <div class="hint">click or press space to flip</div>
+      </div>
+      <div class="face back">
+        <span class="tag" id="tagBack"></span>
+        <div class="label">Core</div>
+        <div class="core" id="core"></div>
+        <div class="label">Breakdown</div>
+        <div class="breakdown" id="breakdown"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <button id="prev">&larr; Prev</button>
+    <span class="counter"><b id="cur">1</b> / <span id="total">0</span></span>
+    <button id="next">Next &rarr;</button>
+  </div>
+  <div class="nav" style="margin-top:12px;">
+    <button id="shuffle">Shuffle Deck</button>
+    <button id="reset">Reset Order</button>
+  </div>
+
+  <div class="footer-tip">
+    <kbd>&larr;</kbd> <kbd>&rarr;</kbd> navigate &middot; <kbd>space</kbd> flip &middot; <kbd>s</kbd> shuffle<br>
+    Read the Core line until you can say it from memory. The Breakdown is there for when "why" or "how" nags at you.
+  </div>
+
+<script>
+  const cards = [
+    // ---------- PORTS ----------
+    { cat:"ports", q:"Port 20 / 21",
+      core:"FTP — the old way to transfer files. Sends everything, including your password, as plain readable text.",
+      bd:"<strong>FTP</strong> stands for File Transfer Protocol. It uses two ports: <strong>21</strong> for commands (login, list files) and <strong>20</strong> for the actual file data. The problem: nothing is encrypted, so anyone watching the network sees the username and password in clear text.<span class='sec'>Insecure. The secure replacement is SFTP, which runs over SSH on port 22.</span>" },
+    { cat:"ports", q:"Port 22",
+      core:"SSH — the secure way to remotely control another machine's command line. Everything is encrypted.",
+      bd:"<strong>SSH</strong> stands for Secure Shell. It gives you a remote command-line session on another computer, with all traffic encrypted so passwords and commands can't be read in transit. Two other secure tools ride on top of it: <strong>SFTP</strong> (secure file transfer) and <strong>SCP</strong> (secure copy).<span class='sec'>This is the SECURE one. It replaces Telnet (23) and plain FTP (21).</span>" },
+    { cat:"ports", q:"Port 23",
+      core:"Telnet — old remote command line with zero encryption. Considered unsafe to use today.",
+      bd:"<strong>Telnet</strong> does the same job as SSH (remote command-line access) but sends everything, including login credentials, as plain readable text. Anyone capturing the traffic can steal the password.<span class='sec'>Insecure. On the exam, seeing Telnet almost always means the right answer is 'switch to SSH on port 22'.</span>" },
+    { cat:"ports", q:"Port 25",
+      core:"SMTP — the protocol email servers use to send mail.",
+      bd:"<strong>SMTP</strong> stands for Simple Mail Transfer Protocol. It is specifically the <strong>sending</strong> side of email, moving a message from your mail server toward the recipient's mail server. Receiving mail uses different protocols (POP3 or IMAP)." },
+    { cat:"ports", q:"Port 53",
+      core:"DNS — the system that turns names like google.com into the numbers computers use.",
+      bd:"<strong>DNS</strong> stands for Domain Name System. Port 53 is where name-to-number lookups happen. It usually uses the fast UDP method for normal lookups, and switches to the more reliable TCP method for big responses or server-to-server transfers.<span class='sec'>Heavily attacked because everything depends on it. Defended with DNSSEC, which digitally signs answers so fakes can be detected.</span>" },
+    { cat:"ports", q:"Port 67 / 68",
+      core:"DHCP — how a device automatically gets an IP address when it joins a network.",
+      bd:"<strong>DHCP</strong> stands for Dynamic Host Configuration Protocol. Instead of someone typing in an address by hand, the device asks for one and a DHCP server hands it out. The <strong>server</strong> listens on port 67, the <strong>client</strong> (your device) uses port 68." },
+    { cat:"ports", q:"Port 80",
+      core:"HTTP — normal web traffic, but unencrypted. Anyone in between can read it.",
+      bd:"<strong>HTTP</strong> stands for HyperText Transfer Protocol. It carries web pages, but with no encryption, so passwords or form data sent over it can be read by anyone on the path.<span class='sec'>Insecure. Pairs with HTTPS (443), which is the encrypted version.</span>" },
+    { cat:"ports", q:"Port 110",
+      core:"POP3 — an older way to receive email. Tends to download mail to one device and remove it from the server.",
+      bd:"<strong>POP3</strong> stands for Post Office Protocol version 3. It pulls email down to the device you are on. Classic behavior is to delete it from the server afterward, so mail does not sync nicely across multiple devices. Mostly replaced by IMAP." },
+    { cat:"ports", q:"Port 143",
+      core:"IMAP — the modern way to receive email. Keeps mail on the server so it syncs across all your devices.",
+      bd:"<strong>IMAP</strong> stands for Internet Message Access Protocol. Unlike POP3, it leaves messages on the server and syncs their state (read, deleted, filed) across your phone, laptop, and webmail." },
+    { cat:"ports", q:"Port 161 / 162",
+      core:"SNMP — how network gear (routers, switches) is monitored and managed remotely.",
+      bd:"<strong>SNMP</strong> stands for Simple Network Management Protocol. A monitoring system asks devices for status on port <strong>161</strong> (polling). Devices push urgent alerts on their own using port <strong>162</strong> (called traps)." },
+    { cat:"ports", q:"Port 389",
+      core:"LDAP — how systems look up users and resources in a directory (like a company login system). Unencrypted.",
+      bd:"<strong>LDAP</strong> stands for Lightweight Directory Access Protocol. It is how things query a central directory of users and devices, such as Microsoft Active Directory, to check 'does this user exist, what are they allowed to do'. Plain LDAP is not encrypted.<span class='sec'>Insecure. Pairs with LDAPS (636), the encrypted version.</span>" },
+    { cat:"ports", q:"Port 443",
+      core:"HTTPS — web traffic that is encrypted. The secure version of HTTP.",
+      bd:"<strong>HTTPS</strong> is HTTP plus encryption using <strong>TLS</strong> (Transport Layer Security, the modern successor to SSL). It scrambles the connection so passwords, payments, and page content can't be read in transit.<span class='sec'>This is the SECURE one. It replaces plain HTTP (80).</span>" },
+    { cat:"ports", q:"Port 445",
+      core:"SMB — Windows file and printer sharing on a network.",
+      bd:"<strong>SMB</strong> stands for Server Message Block. It is how Windows machines share folders and printers with each other.<span class='sec'>A frequent attack target, including ransomware spreading across a network. Commonly blocked at the network's edge so it can't be reached from the internet.</span>" },
+    { cat:"ports", q:"Port 636",
+      core:"LDAPS — the encrypted version of LDAP directory lookups.",
+      bd:"<strong>LDAPS</strong> is LDAP wrapped in SSL/TLS encryption, so directory queries (checking users and permissions) can't be read or tampered with in transit.<span class='sec'>This is the SECURE one. It replaces plain LDAP (389).</span>" },
+    { cat:"ports", q:"Port 3389",
+      core:"RDP — remotely controlling a Windows desktop, seeing the actual screen.",
+      bd:"<strong>RDP</strong> stands for Remote Desktop Protocol. Unlike SSH (which is command line), RDP gives you the full graphical Windows desktop of the remote machine.<span class='sec'>A very common attack target. Should never be exposed directly to the internet; reach it through a VPN instead.</span>" },
+
+    // ---------- TERMS ----------
+    { cat:"terms", q:"DNS",
+      core:"Turns names you can read (google.com) into the numbers computers actually use (an IP address). Name in, number out.",
+      bd:"Your computer doesn't know the number for a name, so it asks a helper server called a <strong>resolver</strong> (usually run by your internet provider). If the resolver doesn't already know, it asks up a chain: the <strong>root servers</strong> know who handles '.com'; the <strong>.com servers</strong> point to the official source for that domain (the <strong>authoritative server</strong>). The answer is cached for a time called the <strong>TTL</strong> (Time To Live).<span class='sec'>Record types:<br>&bull; <strong>A</strong> = name to IPv4 address<br>&bull; <strong>AAAA</strong> = name to IPv6 address (the long colon-style ones)<br>&bull; <strong>CNAME</strong> = alias pointing one name at another<br>&bull; <strong>MX</strong> = the domain's mail server</span>" },
+    { cat:"terms", q:"DHCP",
+      core:"How your device automatically gets its own IP address when it joins a network, without anyone typing one in.",
+      bd:"When a device connects it has no address yet, so it goes through four steps remembered as <strong>DORA</strong>:<br>&bull; <strong>Discover</strong> &mdash; device asks 'any DHCP server out there?'<br>&bull; <strong>Offer</strong> &mdash; a server proposes an address<br>&bull; <strong>Request</strong> &mdash; device says 'I'll take it'<br>&bull; <strong>Acknowledge</strong> &mdash; server confirms<br>It also receives the <strong>gateway</strong> (the way out to the internet, usually your router) and DNS server.<span class='sec'>Server uses port 67, client uses port 68. A fake ('rogue') DHCP server handing out bad settings is a known attack.</span>" },
+    { cat:"terms", q:"NAT",
+      core:"How a whole house or office full of devices shares one single public internet address.",
+      bd:"Your devices have private addresses that don't work on the open internet. The router uses <strong>NAT</strong> (Network Address Translation) to swap the private source address for its one public address as traffic leaves, and it keeps a table of who asked for what so it can send replies back to the right device.<span class='sec'>Two benefits: it stretches the limited supply of IPv4 addresses, and it hides your internal addresses from the outside.</span>" },
+    { cat:"terms", q:"VLAN",
+      core:"A way to make one physical switch act like several separate, isolated networks.",
+      bd:"Normally everything plugged into a switch is on the same network and can talk freely. A <strong>VLAN</strong> (Virtual LAN) lets you carve that one switch into separate groups that can't see each other's traffic, even though they share the same hardware. To let two VLANs communicate you have to route between them with a Layer 3 device.<span class='sec'>Security use: keep guest Wi-Fi traffic away from internal company systems. Operates at Layer 2.</span>" },
+    { cat:"terms", q:"Subnetting",
+      core:"Splitting one big network into smaller networks. The only topic here that needs scratch-paper practice.",
+      bd:"An IP address has two parts: which <strong>network</strong> it's on, and which specific <strong>device</strong> it is. The <strong>subnet mask</strong> is what decides where that split falls. <strong>Subnetting</strong> is deliberately moving that split to chop one large network into several smaller ones, which improves organization and security. You'll see it written in <strong>CIDR</strong> shorthand like <strong>/24</strong>, where the number is how many bits belong to the network portion.<span class='sec'>Layer 3 concept. Reading about it isn't enough; this one requires working practice problems by hand.</span>" },
+    { cat:"terms", q:"OSI Model",
+      core:"A 7-layer teaching map of how network communication is broken into steps.",
+      bd:"From bottom to top:<br>&bull; <strong>1 Physical</strong> &mdash; cables, signals<br>&bull; <strong>2 Data Link</strong> &mdash; switches, MAC addresses<br>&bull; <strong>3 Network</strong> &mdash; IP addresses, routing<br>&bull; <strong>4 Transport</strong> &mdash; TCP/UDP, ports<br>&bull; <strong>5 Session</strong> &mdash; managing a conversation<br>&bull; <strong>6 Presentation</strong> &mdash; encryption, formatting<br>&bull; <strong>7 Application</strong> &mdash; what apps use, like HTTP<span class='sec'>Bottom-up: Please Do Not Throw Sausage Pizza Away.<br>Top-down: All People Seem To Need Data Processing.</span>" },
+    { cat:"terms", q:"TCP/IP Model",
+      core:"The real 4-layer model the internet actually runs on. A simpler version of OSI.",
+      bd:"Same idea as OSI but only four layers, because some OSI layers blur together in real software. Mapping:<br>&bull; <strong>Network Access</strong> = OSI 1-2<br>&bull; <strong>Internet</strong> = OSI 3<br>&bull; <strong>Transport</strong> = OSI 4<br>&bull; <strong>Application</strong> = OSI 5-7<span class='sec'>Engineers think in this model but use OSI's numbers when naming specific functions (like 'Layer 7 firewall').</span>" },
+    { cat:"terms", q:"TCP vs UDP",
+      core:"Two ways to deliver data. TCP is careful and reliable. UDP is fast and doesn't double-check.",
+      bd:"<strong>TCP</strong> sets up a connection with a three-step handshake &mdash; <strong>SYN</strong> (Synchronize), <strong>SYN-ACK</strong> (Synchronize-Acknowledge), <strong>ACK</strong> (Acknowledge) &mdash; then guarantees data arrives, in order, resending anything lost. <strong>UDP</strong> just fires data off with no setup and no guarantees.<span class='sec'>Use TCP when correctness matters (loading a web page, sending email, downloading a file).<br>Use UDP when speed beats perfection (video calls, live streaming, online gaming, DNS lookups).</span>" },
+    { cat:"terms", q:"IP (Layer 3)",
+      core:"The part that handles addressing and getting a packet routed to the right machine across networks.",
+      bd:"<strong>IP</strong> stands for Internet Protocol and lives at Layer 3. Its only job is addressing and routing: take this packet from this address to that address. It does <strong>not</strong> guarantee the packet arrives, arrives in order, or arrives intact. Those guarantees are added on top by TCP at Layer 4." },
+  ];
+
+  let order = cards.map((_, i) => i);
+  let pos = 0;
+  let filter = "all";
+
+  const cardEl = document.getElementById('card');
+  const termEl = document.getElementById('term');
+  const coreEl = document.getElementById('core');
+  const bdEl = document.getElementById('breakdown');
+  const tagFront = document.getElementById('tagFront');
+  const tagBack = document.getElementById('tagBack');
+  const curEl = document.getElementById('cur');
+  const totalEl = document.getElementById('total');
+
+  const filterDefs = [
+    { key:"all", label:"All Cards" },
+    { key:"ports", label:"Ports & Protocols" },
+    { key:"terms", label:"Core Terms" },
+  ];
+
+  const filtersEl = document.getElementById('filters');
+  filterDefs.forEach(f => {
+    const b = document.createElement('div');
+    b.className = 'chip' + (f.key === 'all' ? ' active' : '');
+    b.textContent = f.label;
+    b.onclick = () => {
+      filter = f.key;
+      document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+      b.classList.add('active');
+      buildOrder();
+    };
+    filtersEl.appendChild(b);
+  });
+
+  function buildOrder() {
+    order = cards.map((_, i) => i).filter(i => filter === 'all' || cards[i].cat === filter);
+    pos = 0;
+    render();
+  }
+
+  function render() {
+    cardEl.classList.remove('flipped');
+    const c = cards[order[pos]];
+    setTimeout(() => {
+      termEl.textContent = c.q;
+      coreEl.textContent = c.core;
+      bdEl.innerHTML = c.bd;
+      const label = c.cat === 'ports' ? 'PORT' : 'TERM';
+      tagFront.textContent = label;
+      tagBack.textContent = label;
+    }, cardEl.classList.contains('flipped') ? 250 : 0);
+    curEl.textContent = pos + 1;
+    totalEl.textContent = order.length;
+  }
+
+  cardEl.onclick = () => cardEl.classList.toggle('flipped');
+
+  document.getElementById('next').onclick = () => { pos = (pos + 1) % order.length; render(); };
+  document.getElementById('prev').onclick = () => { pos = (pos - 1 + order.length) % order.length; render(); };
+  document.getElementById('shuffle').onclick = doShuffle;
+  document.getElementById('reset').onclick = buildOrder;
+
+  function doShuffle() {
+    for (let i = order.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [order[i], order[j]] = [order[j], order[i]];
+    }
+    pos = 0;
+    render();
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') document.getElementById('next').click();
+    else if (e.key === 'ArrowLeft') document.getElementById('prev').click();
+    else if (e.key === ' ') { e.preventDefault(); cardEl.classList.toggle('flipped'); }
+    else if (e.key.toLowerCase() === 's') doShuffle();
+  });
+
+  buildOrder();
+</script>
+</body>
+</html>
